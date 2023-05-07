@@ -1,6 +1,9 @@
+from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
 
 
 
@@ -12,8 +15,8 @@ class DataProcessor:
     def process_price(self, df):
         # process y - price
         df['price'] = df['price'].astype(str)
-        df['price'] = df['price'].str.replace('$', '')
-        df['price'] = df['price'].str.replace(',', '')
+        df['price'] = df['price'].str.replace('$', '',regex=True)
+        df['price'] = df['price'].str.replace(',', '',regex=True)
         df['price'] = pd.to_numeric(df['price'])
         # Plot a plot of the 'price' column
         plot = df['price'].plot().get_figure()
@@ -35,9 +38,9 @@ class DataProcessor:
                     'reviews_per_month', 'amenities']
         # get rid of %
         df['host_response_rate'] = df['host_response_rate'].astype(str)
-        df['host_response_rate'] = df['host_response_rate'].str.replace('%', '')
+        df['host_response_rate'] = df['host_response_rate'].str.replace('%', '',regex=True)
         df['host_acceptance_rate'] = df['host_acceptance_rate'].astype(str)
-        df['host_acceptance_rate'] = df['host_acceptance_rate'].str.replace('%', '')
+        df['host_acceptance_rate'] = df['host_acceptance_rate'].str.replace('%', '',regex=True)
 
         df[num_name] = df[num_name].astype(float)
         return df
@@ -79,3 +82,47 @@ class DataProcessor:
                     'bathrooms_text', 'host_identity_verified']
         df = pd.get_dummies(df, columns=cat_name)
         return df
+    
+    def normalize_price(self,df):
+        # normalize y
+        scaler_price = StandardScaler()
+        df['price'] = scaler_price.fit_transform(df[['price']])
+        return df
+        
+    def split_data(self,df):
+        # Split Train and Test
+        np.random.seed(0)
+        y = df.pop('price')
+        df.pop('description')
+        X=df
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        return X_train, X_test, y_train, y_test
+
+    def PCA(self,X_train,X_test):
+        # Create PCA object and fit the data
+        pca = PCA()
+        X_train_pca = pca.fit_transform(X_train)
+
+        # Plot scree plot to visualize explained variance ratio of each component
+        plt.plot(range(1, pca.n_components_+1), pca.explained_variance_ratio_)
+        plt.xlabel('Number of components')
+        plt.ylabel('Explained variance ratio')
+        plt.title('Scree plot')
+        plt.savefig("Figure/PCA/PCA_plot.png")
+        plt.close()
+        
+        # zoom in the scree plot
+        plt.plot(range(1, 61), pca.explained_variance_ratio_[:60])
+        plt.xlabel('Number of components')
+        plt.ylabel('Explained variance ratio')
+        plt.title('Scree plot (Zoom in)')
+        plt.savefig("Figure/PCA/zoom_in_PCA_plot.png")
+        plt.close()
+        best_pc = 30
+        pca = PCA(n_components=best_pc)
+        X_train_pca = pca.fit_transform(X_train)
+        X_test_pca = pca.transform(X_test)
+        
+        X_train = X_train_pca
+        X_test = X_test_pca
+        return X_train,X_test

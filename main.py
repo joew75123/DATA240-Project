@@ -1,7 +1,8 @@
 import DataProcessor
 import LoadDataset
 import Visualize
-
+import FeatureExtraction
+import Modeling
 
 def main():
     # Load Airbnb dataset
@@ -21,19 +22,19 @@ def main():
     
     df=data_processor.update_df(df)
     df=data_processor.drop_null(df)
-    #print(df['amenities'])
+    ##
+    df=data_processor.stanardize_num_col(df)
+    df=data_processor.encode_cat_col(df)
     
+    extractor=FeatureExtraction.FeatureExtraction()
+    df=extractor.feature_description_col(df)
+
+    df=data_processor.normalize_price(df)
+    X_train, X_test, y_train, y_test=data_processor.split_data(df)
+    X_train,X_test=data_processor.PCA(X_train,X_test)
     
-    # airbnb_predictor = AirbnbPricePredictor(df, data_processor, MachineLearningModel())
-
-    # airbnb_predictor.preprocess_data()
-
-    # # Train machine learning model
-    # airbnb_predictor.train_model()
-
-    # # Evaluate model
-    # score = airbnb_predictor.evaluate_model()
-    # print(f'SVM R2 score: {score:.2f}')
+    Model=Modeling.Modeling()
+    Model.Evaluate(X_train, X_test, y_train, y_test)
 
 
 main()

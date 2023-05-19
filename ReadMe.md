@@ -7,6 +7,8 @@ Vacation travel has always been a very important aspect of the modern economy, i
 Setting prices for Airbnb listings becomes more and more challenging due to constantly changing demand and supply dynamics affected by various factors, which triggers the motivation behind this project, which is to provide property owners and travelers with more accurate and reliable information about Airbnb prices.
 ### Project Structure
 * Dataset: listings.csv
+    * From http://insideairbnb.com/get-the-data/
+        * Download Link: http://data.insideairbnb.com/united-states/ca/san-francisco/2023-03-06/data/listings.csv.gz
 * To Run the Program: main.py
 * Visualize the Graph: the Figure Folder
 ### Dependency
@@ -21,3 +23,7 @@ Setting prices for Airbnb listings becomes more and more challenging due to cons
 ![Alt text](/Figure/Example_Output.png?raw=true "Example of Program Output")
 ### Note
 Since the Word2Vec is used in this project, the performance result would be different in each run. But the best model and its performance will be printed in the last.
+### Contributor
+* Jing Li:background, literature review, motivation, data collection, document(proposal, report, presentation slides)
+* Wenbin Wang: data exploration, data engineering, model development, future development, document (proposal, report, presentation slides)
+* Shufang Wen: data exploration, data engineering, model development, future development, document (proposal, report, presentation slides)

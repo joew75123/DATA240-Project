@@ -17,5 +17,7 @@ Setting prices for Airbnb listings becomes more and more challenging due to cons
     * FeatureExtraction.py: To preprocess the text data and utilize Word2Vec 
     * Visualize.py: To save the figure into Figure folder
     * Modeling.py: Defining ML models and a Evaluation helper function
+### Example of Program Output
+![plot](\Figure\Example of Program Output.png)
 ### Note
 Since the Word2Vec is used in this project, the performance result would be different in each run. But the best model and its performance will be printed in the last.

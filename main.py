@@ -17,6 +17,7 @@ def main():
     
     Visualizer=Visualize.Visualize()
     Visualizer.check_num_corr(df)
+    #Visualizer.distri_num_col(df)
     Visualizer.visual_num_col(df)
     Visualizer.visual_cat_col(df)
     
@@ -30,11 +31,11 @@ def main():
     df=extractor.feature_description_col(df)
 
     df=data_processor.normalize_price(df)
-    X_train, X_test, y_train, y_test=data_processor.split_data(df)
-    X_train,X_test=data_processor.PCA(X_train,X_test)
+    X_train, X_test, y_train, y_test, X_val, y_val=data_processor.split_data(df)
+    X_train,X_test,X_val=data_processor.PCA(X_train,X_test,X_val)
     
     Model=Modeling.Modeling()
-    Model.Evaluate(X_train, X_test, y_train, y_test)
+    Model.Evaluate(X_train, X_test, y_train, y_test, X_val, y_val)
 
 
 main()
